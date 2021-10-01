@@ -1,0 +1,11 @@
+{
+  "name": "social-type",
+  "version": "1.0.0",
+  "description": "Social media created with typescript",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alfred Mora",
+  "license": "MIT"
+}
