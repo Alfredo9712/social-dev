@@ -1,14 +1,5 @@
-export interface User {
-  name?: string;
-  email: string;
-  password: string;
-}
-
+import { User } from "../../../backend/interfaces/user";
 export interface Auth {
   token: string;
-  user: {
-    _id: string;
-    email: string;
-    name: string;
-  };
+  user: User;
 }

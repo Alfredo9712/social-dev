@@ -1,5 +1,6 @@
 import { FC, useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios, { AxiosResponse } from "axios";
 import { loginUser } from "../../features/user.slice";
@@ -9,13 +10,21 @@ import { AlertComponent } from "../utils";
 export const Register: FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [name, setName] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
   const [variant, setVairant] = useState<string>("");
   const [text, setText] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const verifyHandler = () => {
-    if (email === "" || password === "" || name === "") {
+    if (
+      email === "" ||
+      password === "" ||
+      firstName === "" ||
+      lastName === ""
+    ) {
       setError(true);
       setVairant("warning");
       setText("Invalid input");
@@ -36,19 +45,33 @@ export const Register: FC = () => {
     e.preventDefault();
     const result = verifyHandler();
     if (result === false) return;
-    const user = {
+    const regUser = {
       email,
       password,
+      firstName,
+      lastName,
+    };
+    const logUser = {
+      email,
+      password,
+      firstName,
     };
     try {
+      await axios.post("/api/users/register", regUser);
+
       const { data }: AxiosResponse<Auth> = await axios.post(
-        "/api/users/register",
-        user
+        "/api/users/login",
+        logUser
       );
-      const { email, name, _id } = data.user;
-      dispatch(loginUser({ email, name, _id }));
+      //thoughts
+      const { email, firstName, _id } = data.user;
+      dispatch(loginUser({ email, firstName, _id }));
+      history.push("/home");
+
       setEmail("");
       setPassword("");
+      setFirstName("");
+      setLastName("");
     } catch (error: any) {
       setError(true);
       setVairant("warning");
@@ -73,17 +96,27 @@ export const Register: FC = () => {
           <h1>Sign Up</h1>
           {error && <AlertComponent text={text} variant={variant} />}
 
-          <Form.Label>Name</Form.Label>
+          <Form.Label>First name</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter name"
-            onChange={(e) => setName(e.target.value.toLowerCase())}
+            value={firstName}
+            placeholder="Enter first name"
+            onChange={(e) => setFirstName(e.target.value.toLowerCase())}
+            style={{ backgroundColor: "white", maxWidth: "550px" }}
+          />
+          <Form.Label style={{ marginTop: "20px" }}>Last name</Form.Label>
+          <Form.Control
+            type="text"
+            value={lastName}
+            placeholder="Enter last name"
+            onChange={(e) => setLastName(e.target.value.toLowerCase())}
             style={{ backgroundColor: "white", maxWidth: "550px" }}
           />
 
           <Form.Label style={{ marginTop: "20px" }}>Email address</Form.Label>
           <Form.Control
             type="email"
+            value={email}
             placeholder="Enter email"
             onChange={(e) => setEmail(e.target.value.toLowerCase())}
             style={{ backgroundColor: "white", maxWidth: "550px" }}
@@ -92,6 +125,7 @@ export const Register: FC = () => {
 
           <Form.Control
             type="password"
+            value={password}
             placeholder="Enter password"
             onChange={(e) => setPassword(e.target.value)}
             style={{ backgroundColor: "white", maxWidth: "550px" }}

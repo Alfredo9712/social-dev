@@ -1,10 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "../features/user.slice";
-import { composeWithDevTools } from "redux-devtools-extension";
-
 export const store = configureStore({
   reducer: {
-    user: userReducer,
+    auth: userReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
   devTools: process.env.NODE_ENV !== "production",

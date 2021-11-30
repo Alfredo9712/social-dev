@@ -14,15 +14,17 @@ const saltRounds = 10;
 //* @route     GET /api/users/register
 //* @access    Public
 router.post("/users/register", async (req: Request, res: Response) => {
-  const { email, name, password }: User = req.body;
+  const { email, firstName, lastName, password, thoughts }: User = req.body;
   try {
     const user = await UserModel.findOne({ email }).exec();
     if (user) res.status(406).json({ msg: "User already exists" });
     const hashedPassword: string = await bcrypt.hash(password, saltRounds);
     const newUser = new UserModel({
       email,
-      name,
+      firstName,
+      lastName,
       password: hashedPassword,
+      thoughts,
     });
     await newUser.save();
     res.send(newUser);
@@ -46,7 +48,6 @@ router.post("/users/login", async (req: Request, res: Response) => {
       expiresIn: "1h",
     });
     res.setHeader("x-auth-token", token);
-
     res.send({ token: token, user });
   } catch (error) {
     res.status(401).send({ msg: "Invalid Credentials" });

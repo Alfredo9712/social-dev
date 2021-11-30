@@ -1,3 +1,25 @@
 body {
   background-color: rgb(240, 245, 250);
 }
+
+.welcome-text {
+  margin-top: 25%;
+  font-size: 30px;
+}
+.welcome-btn {
+  margin-top: 6%;
+
+  border-radius: 10px;
+}
+.welcome-img {
+  border-radius: 30px;
+  max-width: 100%;
+  height: auto;
+  margin-top: 2%;
+}
+
+@media only screen and (min-width: 1000px) {
+  .welcome-text {
+    font-size: 60px;
+  }
+}

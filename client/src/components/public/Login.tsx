@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AlertComponent } from "../utils";
 import axios, { AxiosResponse } from "axios";
@@ -13,6 +13,8 @@ export const Login: FC = () => {
   const [text, setText] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const verifyHandler = () => {
     if (email === "" || password === "") {
       setError(true);
@@ -44,10 +46,13 @@ export const Login: FC = () => {
         "/api/users/login",
         user
       );
-      const { email, name, _id } = data.user;
-      dispatch(loginUser({ email, name, _id }));
+      //thoughts
+      const { email, firstName, _id } = data.user;
+
+      dispatch(loginUser({ email, firstName, _id }));
       setEmail("");
       setPassword("");
+      history.push("/home");
     } catch (error: any) {
       setError(true);
       setVairant("warning");

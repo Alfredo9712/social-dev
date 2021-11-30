@@ -7,7 +7,7 @@ import { logoutUser } from "../../features/user.slice";
 
 export const Header: FC = () => {
   const isAuthenticated = useSelector(
-    (state: RootState) => state.user.data.isAuthenticated
+    (state: RootState) => state.auth.isAuthenticated
   );
   const dispatch = useDispatch();
   return (
