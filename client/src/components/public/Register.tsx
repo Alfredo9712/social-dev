@@ -57,7 +57,8 @@ export const Register: FC = () => {
       firstName,
     };
     try {
-      await axios.post("/api/users/register", regUser);
+      const request = await axios.post("/api/users/register", regUser);
+      console.log(request);
 
       const { data }: AxiosResponse<Auth> = await axios.post(
         "/api/users/login",
