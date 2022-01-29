@@ -8,6 +8,7 @@ import { RootState } from "./app/store";
 import { Home } from "./components/private/Home";
 
 // https://cdn.dribbble.com/users/5027649/screenshots/15188890/media/a09f3f275d1d5aeb3da19713951d23b6.jpg?compress=1&resize=1600x1200
+// new comment
 
 function App() {
   const isAuth = useSelector((state: RootState) => state.auth.isAuthenticated);
